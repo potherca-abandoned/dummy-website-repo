@@ -1,6 +1,5 @@
 ---
 title: "Hello World!"
-published: false
 ---
 
 ## This is a header

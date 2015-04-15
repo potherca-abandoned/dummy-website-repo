@@ -11,4 +11,8 @@
   <div class="container">
     {{ content }}
   </div>
+
+  {%if site.add_deploy_button == true %}
+    {% include deploy_button.html %}
+  {%endif%}
 </html>

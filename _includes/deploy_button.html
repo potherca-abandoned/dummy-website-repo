@@ -57,7 +57,7 @@ document.getElementById('JS_deploy').addEventListener('click', function(p_oEvent
         );
     };
 
-    request.send('{"base": "master", "head": "gh-pages", "commit_message": "Deploy to Github Pages branch."}');
+    request.send('{"base": "gh-pages", "head": "master", "commit_message": "Deploy to Github Pages branch."}');
     //request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 }, false);
 

@@ -1,0 +1,64 @@
+
+<link rel="stylesheet" href="http://necolas.github.io/css3-github-buttons/gh-buttons.css">
+<style>
+    .deploy-to-github-containter {
+        background: rgba(100%, 100%, 100%, 0.35);
+        bottom: 0;
+        left: 0;
+        margin: 0;
+        padding: 0.5em;
+        position: fixed;
+        right: 0;
+        text-align: center;
+    }
+</style>
+<div class="deploy-to-github-containter">
+    <a href="#" id="JS_deploy" class="button big">Deploy to Github</a>
+</div>
+<script>
+document.getElementById('JS_deploy').addEventListener('click', function(p_oEvent) {
+    p_oEvent.preventDefault();
+    p_oEvent.stopPropagation();
+
+    var el = document.getElementById('JS_message');
+    if (el) {
+        el.parentNode.removeChild(el);
+    }
+
+    var request = new XMLHttpRequest();
+
+    request.open('POST', 'https://api.github.com/repos/{{ site.github_repo }}/merges?access_token={{ site.github_token }}', true);
+
+    request.onload = function() {
+        var sMessage;
+        switch (request.status) {
+            case 204:
+                sMessage = 'Nothing to merge';
+                break;
+            case 201:
+                sMessage = 'Created: The resulting merge commit';
+                break;
+            case 204:
+                sMessage = 'No Content: Base already contains the head, nothing to merge';
+                break;
+            case 409:
+                sMessage = 'Conflict: Merge conflict';
+                break;
+            case 404:
+                sMessage = 'Not Found: Missing head or base';
+                break;
+            default:
+                sMessage = 'Uknow Error';
+                break;
+        }
+
+        document.getElementById('JS_deploy').insertAdjacentHTML('afterend',
+            '<p id="JS_message" style="display: inline-block; margin: 0 2em;">' + sMessage + '</p>'
+        );
+    };
+
+    request.send('{"base": "gh-pages", "head": "master", "commit_message": "Deploy to Github Pages branch."}');
+    //request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+}, false);
+
+</script>
